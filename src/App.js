@@ -7,7 +7,8 @@ import CountriesApi from "./components/countriesApi.js/countriesApi";
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import React from 'react';
 import CountriesData from "./components/countriesApi.js/countryData";
-
+import UserForm from "./components/user form/userForm";
+import ShowUser from "./components/user form/showUser";
 function App() {
   return (
     <div className="App">
@@ -15,6 +16,8 @@ function App() {
         <Routes>
           <Route path="/" element={<CountriesApi />}/>
           <Route path="/userData" element={<CountriesData />}/>
+          <Route path="/userForm" element={<UserForm/>}/>
+          <Route path="/show" element={<ShowUser/>}/>
         </Routes>
       </Router>
       {/* <Header/>

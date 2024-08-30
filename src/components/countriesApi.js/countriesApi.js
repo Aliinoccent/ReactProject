@@ -27,7 +27,7 @@ const CounthiesApi = () => {
   return (
     <div className="container d-flex justify-content-center align-items-center w-100 flex-column">
       <h1 className="h1 pt-1 text-primary">Countries Data</h1>
-      <div><CountriesSearch/></div>
+      <div className="d-flex justify-content-between container"><div><CountriesSearch/></div>< div><Link to='/userForm'>userForm</Link></div></div>
       <table className="table table-bordered">
         <thead className="thead-dark">
           <tr>
