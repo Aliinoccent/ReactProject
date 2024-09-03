@@ -1,16 +1,46 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux"; 
-import { Link } from "react-router-dom";
-
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux"; 
+import { Link,useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const UserForm = () => {
-  const dispatch=useDispatch()
-  const [data, setData] = useState({
+  const navigate=useNavigate();
+  const paramId=useParams();
+  const [updateData,setUpdateData]=useState({})
+  const [submit,setsubmit]=useState(false)
+  // const location = useLocation();
+  // const RouteData=location.state;
+  // console.log(RouteData);
+
+  const dispatch = useDispatch();
+  const users = useSelector(state => state.user); // Access the current users from the Redux store
+  console.log(users)
+  let [data, setData] = useState({
     id: '',
     email: '',
     pas: '',
     city: ''
   });
+  useEffect(()=>{
+    
+  console.log(paramId.id)
+    // debugger
+    const userfound = users.find(user => user.id == paramId.id);
+    
+    console.log(userfound,'find')
+    // setUpdateData(userfound) //its wrong way to set object properties or keys
+    if (userfound) {
+      setsubmit(true)
+      setData({
+        id: userfound.id,
+        email: userfound.email,
+        pas: userfound.pas,
+        city: userfound.city
+      });
+    }else{
+      console.log('not found data');
+    }
+  },[paramId,users])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,14 +52,37 @@ const UserForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission
-    console.log(data); // Log the form data
-    dispatch({type:'userForm',payload:data})
+    
+    // Automatically set the id based on the length of the current users array
+  if(submit===false){
+    const newId = users.length + 1;
+    const newData = { ...data, id: newId };
+
+    console.log(newData); // Log the form data with the new id
+    dispatch({type: 'userForm', payload: newData});
+  // setData({
+  //   email: '',
+  //   pas: '',
+  //   city: ''
+  // })
+  setData=Object.keys(data).forEach(key=>data[key]='')
+  console.log(data);
+  }
+  else if( submit){
+
+    dispatch({type:'update',payload:data})
+    setData=Object.keys(data).forEach(key=>data[key]='')
+    setsubmit(false)
+    navigate('/userForm')
   
+  }
+   
+    
   };
 
   return (
     <div className="container bg-dark text-white p-5 rounded">
-      <Link to={'/show'}>users List</Link>
+      <Link to={'/show'}>Users List</Link>
       <form onSubmit={handleSubmit}>
         <div className="form-row">
           <div className="form-group col-md-6">
@@ -70,7 +123,6 @@ const UserForm = () => {
         </div>
         <button type="submit" className="btn btn-primary">Submit</button>
       </form>
-      
     </div>
   );
 };

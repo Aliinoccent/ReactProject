@@ -16,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<CountriesApi />}/>
           <Route path="/userData" element={<CountriesData />}/>
+          <Route path="/userForm/:id" element={<UserForm/>}/>
           <Route path="/userForm" element={<UserForm/>}/>
           <Route path="/show" element={<ShowUser/>}/>
         </Routes>
